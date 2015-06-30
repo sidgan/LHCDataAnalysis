@@ -10,28 +10,31 @@ The process of predicting popularity of datasets, hence which datasets replicas 
 
 ##Goals
 
-Define the popularity index. 
-The target goal is to find the popular datasets, but what is a popular dataset? Which parameters define popularity of the dataset?
-Apply machine learning algorithms and analytics for prediction. 
-Find the hardware configuration that gives the relatively best run of a machine learning algorithm. 
-Time Series analysis of the existing processes to see if any process might become popular in any given week of any year. 
-Generalize machine learning algorithms so that they can streamline CMS data without much data formatting. May lead to creation of an API. 
-Evaluate Apache Spark as an alternate framework for the complete analysis procedure. 
+1. Define the popularity index. 
+a. The target goal is to find the popular datasets, but what is a popular dataset? 
+b. Which parameters define popularity of the dataset?
+
+2. Apply machine learning algorithms and analytics for prediction. 
+3. Find the hardware configuration that gives the relatively best run of a machine learning algorithm. 
+4. Time Series analysis of the existing processes to see if any process might become popular in any given week of any year. 
+5. Generalize machine learning algorithms so that they can streamline CMS data without much data formatting. May lead to creation of an API. 
+6. Evaluate Apache Spark as an alternate framework for the complete analysis procedure. 
 
 ##Dataset
 
 A dataset describes a process completely. A process is any interaction taking place in the LHC. An example would be proton-proton collision in the LHC, taking place at a single vertex. A single process may be composed of many collisions taking place at the same vertex. The weekly collection of data is uniquely represented by the name of the dataset. It describes which weeks data it contains, 20140101 - 20140107 will describe the first week of year 2014. 
 
-A datasets format is defined by three distinct parts, 
-*a
-*b
-*c
+A datasets format is defined by three distinct parts:
+
+1. a
+2. b
+3. c
  
 where:
 
-*a is a process type, examples include Higgs Process, TopQuark, ttbq. 
-*b is the software used and its version/release number. This variable is important for reproducing identical results in the future.
-*c, defines the tier  {RAW, RECO, AOP, DIGI, DIGI-RECO, SIM}
+1. a is a process type, examples include Higgs Process, TopQuark, ttbq. 
+2. b is the software used and its version/release number. This variable is important for reproducing identical results in the future.
+3. c defines the tier  {RAW, RECO, AOP, DIGI, DIGI-RECO, SIM}
 
 These are combined as /a/b/c.
 
@@ -39,9 +42,9 @@ Dataframe is the input file in comma separated values format. This is the file o
 
 Currently used popularity metrics: 
 
-*naccess - number of accesses to a dataset
-*totcpu - number of CPU hours utilized to access a dataset
-*nusers - number of users times days when the dataset was accessed
+1. naccess - number of accesses to a dataset
+2. totcpu - number of CPU hours utilized to access a dataset
+3. nusers - number of users times days when the dataset was accessed
 
 These are reported by the PopularityDB
 
