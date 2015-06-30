@@ -23,15 +23,15 @@ Evaluate Apache Spark as an alternate framework for the complete analysis proced
 A dataset describes a process completely. A process is any interaction taking place in the LHC. An example would be proton-proton collision in the LHC, taking place at a single vertex. A single process may be composed of many collisions taking place at the same vertex. The weekly collection of data is uniquely represented by the name of the dataset. It describes which weeks data it contains, 20140101 - 20140107 will describe the first week of year 2014. 
 
 A datasets format is defined by three distinct parts, 
-a
-b
-c
+*a
+*b
+*c
  
 where:
 
-a is a process type, examples include Higgs Process, TopQuark, ttbq. 
-b is the software used and its version/release number. This variable is important for reproducing identical results in the future.
-c, defines the tier  {RAW, RECO, AOP, DIGI, DIGI-RECO, SIM}
+*a is a process type, examples include Higgs Process, TopQuark, ttbq. 
+*b is the software used and its version/release number. This variable is important for reproducing identical results in the future.
+*c, defines the tier  {RAW, RECO, AOP, DIGI, DIGI-RECO, SIM}
 
 These are combined as /a/b/c.
 
@@ -39,9 +39,9 @@ Dataframe is the input file in comma separated values format. This is the file o
 
 Currently used popularity metrics: 
 
-naccess - number of accesses to a dataset
-totcpu - number of CPU hours utilized to access a dataset
-nusers - number of users times days when the dataset was accessed
+*naccess - number of accesses to a dataset
+*totcpu - number of CPU hours utilized to access a dataset
+*nusers - number of users times days when the dataset was accessed
 
 These are reported by the PopularityDB
 
