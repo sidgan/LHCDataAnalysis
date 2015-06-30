@@ -6,7 +6,7 @@ A classification problem which aims at finding if a dataset will become popular 
 
 This data is produced by the LHC weekly. Analysing this data leads to useful information about the physical processes. Reproducibility is necessary so that any process can be simulated just like the original in a software at different times. Besides this, some process may be researched more by users and hence it needs to be made easily accessible to all the users. Accessibility is possible using replicas of data at some specified places. The user can then obtain the data from the nearest replica. Creating numerous replicas of every dataset is not feasible because the all datasets are vast. Maintaining and mirroring such vast datasets is an expensive job hence, the need of predicting which dataset might become popular is necessary.  
 
-The process of predicting popularity of datasets�, hence which datasets� replicas should be created, is a machine learning problem. Hence, the aim of the problem is to use machine learning to predict which dataset will become popular and when.  
+The process of predicting popularity of datasets, hence which datasets replicas should be created, is a machine learning problem. Hence, the aim of the problem is to use machine learning to predict which dataset will become popular and when.  
 
 ##Goals
 
@@ -20,9 +20,9 @@ Evaluate Apache Spark as an alternate framework for the complete analysis proced
 
 ##Dataset
 
-A dataset describes a process completely. A process is any interaction taking place in the LHC. An example would be proton-proton collision in the LHC, taking place at a single vertex. A single process may be composed of many collisions taking place at the same vertex. The weekly collection of data is uniquely represented by the name of the dataset. It describes which week�s data it contains, 20140101 - 20140107 will describe the first week of year 2014. 
+A dataset describes a process completely. A process is any interaction taking place in the LHC. An example would be proton-proton collision in the LHC, taking place at a single vertex. A single process may be composed of many collisions taking place at the same vertex. The weekly collection of data is uniquely represented by the name of the dataset. It describes which weeks data it contains, 20140101 - 20140107 will describe the first week of year 2014. 
 
-A datasets� format is defined by three distinct parts, 
+A datasets format is defined by three distinct parts, 
 a
 b
 c
