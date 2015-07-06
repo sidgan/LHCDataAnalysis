@@ -19,7 +19,7 @@ def main():
       for file_ in filename:
            data_temp = pd.read_csv(file_, index_col=None, header=0)
            data = data.append(data_temp, ignore_index=True)
-           plt.hist(np.log(data['naccess'] + 1), bins, alpha=0.5, color = hist_col, label = hist_label)
+           plt.hist(np.log(data['naccess'] + 1), alpha=0.5, color = hist_col, label = hist_label)
       plt.show()
     
 
