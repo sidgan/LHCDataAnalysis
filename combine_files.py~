@@ -14,7 +14,7 @@ def main():
   	  for file_ in filename:
         	   data_temp = pd.read_csv(file_, index_col=None, header=0)
         	   data = data.append(data_temp, ignore_index=True)
-   	  data.to_csv( (year + '.csv') , sep=',')  
+   	  data.to_csv( (year + '.csv') , sep='\t')  
   
     combine_files(filename_2014, '2014')
     combine_files(filename_2015, '2015')
