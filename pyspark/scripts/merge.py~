@@ -1,0 +1,25 @@
+import csv as csv
+import glob
+import pandas as pd 
+
+def main():
+    
+    path = '/afs/cern.ch/user/s/sganju/private/'
+    filename_2013 = glob.glob(path + 'dataframe-2013*.csv')
+    filename_2014 = glob.glob(path + 'dataframe-2014*.csv')
+    filename_2015 = glob.glob(path + 'dataframe-2015*.csv')
+ 
+    def combine_files(filename, year):
+    	  data = pd.DataFrame()
+  	  for file_ in filename:
+        	   data_temp = pd.read_csv(file_, index_col=None, header=0)
+        	   data = data.append(data_temp, ignore_index=True)
+   	  data.to_csv( (year + '.csv') , sep=',')  
+  
+    combine_files(filename_2014, '2014')
+    combine_files(filename_2015, '2015')
+  
+    
+#main ends here 
+if __name__ == '__main__':
+	main()	
