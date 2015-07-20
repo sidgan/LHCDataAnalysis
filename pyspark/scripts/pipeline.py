@@ -69,53 +69,35 @@ def cal_score_f1(method, clf, features_test, target_test):
 
 def main():
 	split = 0.3
-	num_values = "id cpu creator dataset dbs dtype era naccess nblk	nevt nfiles nlumis nrel nsites nusers parent primds proc_evts procds rnaccess rnusers rtotcpu size tier totcpu wct"
 	p = optparse.OptionParser()
 	#take training data set 
 	p.add_option('--train_dataset', '-i', default='/afs/cern.ch/user/s/sganju/private/2014_target.csv')
 	#specify target column
 	p.add_option('--target', '-y', default="target")	
-	p.add_option('--num_values', '-o', default= num_values)
 	#parse inputs
 	options, arguments = p.parse_args()
 	#split different numerical values
-	num_values = num_values.split()
-	
 	#load from files 
-	train = pd.read_csv(options.train_dataset)
+	train = pd.read_csv(options.train_dataset) 
+	data = train[["id", "cpu", "creator", "dbs" , "dtype" , "era" ,  "nblk"	, "nevt" , "nfiles" , "nlumis" , "nrel" , "nsites" , "nusers" , "parent" , "primds" , "proc_evts" , "procds" , "rnaccess" , "rnusers" , "rtotcpu" , "size" , "tier" , "totcpu" , "wct"]]
+
 		
 	#load target values 
 	target = train['target']
 	
 	#TRAINING DATA SET 
-	#final data frame with categorical and numerical values 
-	#data = pd.DataFrame()
-	#data  train.(num_values)
-	#data = pd.concat([train.get(num_values)], axis=1)
-	data = train 
-	#data = data.head(400)
-	#target = target.head(400)
-	
-	#no NAN values so imputation not necessary
-	#print "Performing imputation."
-	#imp = data.dropna().mean()
-	#test = data.fillna(imp)
-    #data = data.fillna(imp)
-
-	print "Splitting the training data with %f." % split 
 	features_train, features_test, target_train, target_test = train_test_split(data, target, test_size=split, random_state=0)
-	print "Generating Model"	
 	#diffrentiate on the basis of type of problem
 	#RANDOM FOREST CLASSIFIER 
 	rf = RandomForestClassifier(n_estimators=100)
 	rf = rf.fit(features_train, target_train)
 	cal_score_accuracy("RANDOM FOREST CLASSIFIER",rf, features_test, target_test)
 	#test data set then make predictions 
-	test = pd.read_csv('dataframe-20130101-20130107.csv')
-	#test = pd.concat([train.get(num_values)], axis=1)
+	test = pd.read_csv('dataframe-20130101-20130107-TARGET.csv')
+	test = test[["id", "cpu", "creator", "dbs" , "dtype" , "era" ,  "nblk"	, "nevt" , "nfiles" , "nlumis" , "nrel" , "nsites" , "nusers" , "parent" , "primds" , "proc_evts" , "procds" , "rnaccess" , "rnusers" , "rtotcpu" , "size" , "tier" , "totcpu" , "wct"]]
 	predictions = rf.predict_proba(test)
 	#predict for a week and then print it 
-	print predictions
+	
 	
 
 #main ends here 
