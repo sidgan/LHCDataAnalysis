@@ -70,6 +70,8 @@ def cal_score_f1(method, clf, features_test, target_test):
 def main():
 	split = 0.3
 	num_values = "id cpu creator dataset dbs dtype era naccess nblk	nevt nfiles nlumis nrel nsites nusers parent primds proc_evts procds rnaccess rnusers rtotcpu size tier totcpu wct"
+	su_train = []
+	su_test = [] 
 	p = optparse.OptionParser()
 	#take training data set 
 	p.add_option('--train_dataset', '-i', default='/afs/cern.ch/user/s/sganju/private/2014_target.csv')
@@ -89,10 +91,8 @@ def main():
 	
 	#TRAINING DATA SET 
 	#final data frame with categorical and numerical values 
-	#data = pd.DataFrame()
-	#data  train.(num_values)
-	#data = pd.concat([train.get(num_values)], axis=1)
-	data = train 
+	#data = pd.concat([train.get(num_values), su_train], axis=1)
+    data = train 
 	#data = data.head(400)
 	#target = target.head(400)
 	
@@ -109,13 +109,49 @@ def main():
 	#RANDOM FOREST CLASSIFIER 
 	rf = RandomForestClassifier(n_estimators=100)
 	rf = rf.fit(features_train, target_train)
-	cal_score_accuracy("RANDOM FOREST CLASSIFIER",rf, features_test, target_test)
+	cal_score("RANDOM FOREST CLASSIFIER",rf, features_test, target_test)
 	#test data set then make predictions 
 	test = pd.read_csv('dataframe-20130101-20130107.csv')
-	#test = pd.concat([train.get(num_values)], axis=1)
 	predictions = rf.predict_proba(test)
 	#predict for a week and then print it 
 	print predictions
+
+	#RANDOM FOREST CLASSIFIER 
+	rf = RandomForestClassifier(n_estimators=100)
+	rf = rf.fit(features_train, target_train)
+	cal_score("RANDOM FOREST CLASSIFIER",rf, features_test, target_test)
+	#predictions = rf.predict_proba(test)
+
+	#SGD CLASSIFIER		
+	clf = SGDClassifier(alpha=0.0001, class_weight=None, epsilon=0.1, eta0=0.0,
+    		fit_intercept=True, l1_ratio=0.15, learning_rate='optimal',
+      loss='hinge', n_iter=5, n_jobs=1, penalty='l2', power_t=0.5,
+       random_state=None, shuffle=True, verbose=0,
+       warm_start=False)
+	clf.fit(features_train, target_train)
+	cal_score("SGD Regression",clf, features_test, target_test)
+
+	# SUPPORT VECTOR MACHINES 
+	clf = svm.SVC(kernel = 'linear')
+	clf.fit(features_train, target_train)
+	cal_score("LINEAR KERNEL",clf, features_test, target_test)
+	#print clf.kernel
+	
+	#KN Classifier
+	neigh = KNeighborsClassifier(n_neighbors = 1)
+	neigh.fit(features_train, target_train)
+	cal_score("KN CLASSIFICATION",neigh, features_test, target_test)
+	#predictions = neigh.predict_proba(test)
+	
+		
+
+	
+	#Decision Tree classifier
+	clf_tree = tree.DecisionTreeClassifier(max_depth=10)
+	clf_tree.fit(features_train, target_train)
+	cal_score("DECISION TREE CLASSIFIER",clf_tree, features_test, target_test)
+	#predictions = clf_tree.predict_proba(test)
+	
 	
 
 #main ends here 
