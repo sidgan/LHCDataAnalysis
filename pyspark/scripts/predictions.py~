@@ -1,0 +1,202 @@
+#!bin/bash 
+#author sidgan
+
+
+import csv 
+import pandas as pd
+import numpy as np 
+import sklearn 
+import sklearn.cluster 
+import optparse 
+from pandas import * 
+from pandas import DataFrame
+from sklearn import linear_model
+from sklearn.linear_model import SGDClassifier
+from sklearn import cross_validation 
+from sklearn.metrics import precision_recall_curve
+from sklearn.cross_validation import train_test_split 
+from sklearn.metrics import classification_report
+from sklearn.metrics import accuracy_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import svm 
+from sklearn.grid_search import GridSearchCV
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.cross_validation import cross_val_score
+import timeit
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report 
+
+
+#RF, LinearSVC, SGDClassfier, VW, xgboost)
+#as well as SVM, decision tree and naive bayes from Spark platform
+
+def perf_measure(target, predictions):
+	TP = 0
+	FP = 0
+	TN = 0
+	FN = 0
+	for i in range(len(y_hat)): 
+		if y_actual[i]==y_hat[i]==1:
+			TP += 1
+	for i in range(len(y_hat)): 
+		if y_actual[i]==1 and y_actual!=y_hat[i]:
+			FP += 1
+	for i in range(len(y_hat)): 
+		if y_actual[i]==y_hat[i]==0:
+			TN += 1
+	for i in range(len(y_hat)): 
+		if y_actual[i]==0 and y_actual!=y_hat[i]:
+			FN += 1
+	print "	true positive"
+	print TP
+	print "false positive"
+	print FP
+	print "true negative"
+	print TN
+	print "false negative" 
+	print FN
+	
+
+
+#accuracy 
+def cal_score(method, clf, features_test, target_test):
+		print features_test 
+		print target_test 
+		scores = cross_val_score(clf, features_test, target_test)
+		print scores 
+		print target_test 
+		print features_test 
+		print "ACCURACY" 
+		print method + " : %f " % scores.max()
+		#print "PRECISION"
+		#print sklearn.metrics.average_precision_score(features_test, target_test)
+		#print sklearn.metrics.precision_score(features_test, target_test)
+		#print "F1"
+		#print sklearn.metrics.f1_score(features_test, target_test)
+		#print "RECALL"
+		#print sklearn.metrics.recall_score(features_test, target_test)
+		#print sklearn.metrics.precision_recall_fscore_support(features_test, target_test)
+		#confusion_matrix(features_test, target_test)
+		#target_names = ['popular', 'unpopular']
+		#print(classification_report(features_test, target_test, target_names=target_names))
+		#perf_measure( target_test, features_test)
+	
+
+def main():
+	start_time = timeit.default_timer()
+	split = 0.3
+	p = optparse.OptionParser()
+	#take training data set 
+	p.add_option('--train_dataset', '-i', default='/afs/cern.ch/user/s/sganju/private/2014_target.csv')
+	#specify target column
+	p.add_option('--target', '-y', default="target")
+	#add different algos 
+	#random forest 
+	p.add_option('--algo', '-a',default = "rf")
+	#parse inputs
+	options, arguments = p.parse_args()
+	#split different numerical values
+	#load from files 
+	train = pd.read_csv(options.train_dataset) 
+	data = train[["id", "cpu", "creator", "dbs" , "dtype" , "era" ,  "nblk"	, "nevt" , "nfiles" , "nlumis" , "nrel" , "nsites" , "nusers" , "parent" , "primds" , "proc_evts" , "procds" , "rnaccess" , "rnusers" , "rtotcpu" , "size" , "tier" , "totcpu" , "wct"]]
+	#data = data.head(500)
+
+		
+	#load target values 
+	target = train['target']
+	#target = target.head(500)
+
+	#TRAINING DATA SET 
+	#features_train, features_test, target_train, target_test = train_test_split(data, target, test_size=split, random_state=0)
+	#read next week with its target values for performance metrics 
+	test1 = pd.read_csv('dataframe-20130101-20130107-TARGET.csv')
+	#use only some columns 
+	test = test1[["id", "cpu", "creator", "dbs" , "dtype" , "era" ,  "nblk"	, "nevt" , "nfiles" , "nlumis" , "nrel" , "nsites" , "nusers" , "parent" , "primds" , "proc_evts" , "procds" , "rnaccess" , "rnusers" , "rtotcpu" , "size" , "tier" , "totcpu" , "wct"]]
+	target = test1['target']
+
+	#diffrentiate on the basis of type of problem
+	if options.algo == 'rf':
+		#RANDOM FOREST CLASSIFIER 
+		rf = RandomForestClassifier(n_estimators=100)
+		#100 trees in forest
+		#fit for 2014 data 
+		rf = rf.fit(data, train['target'])
+		#predict 20130101 week 
+		predictions = rf.predict_proba(test)
+		#make predictions binary 
+		predictions = predictions.astype(np.int64)
+		#find accuracy 
+		cal_score("RANDOM FOREST CLASSIFIER", rf, predictions, test1['target']) 
+
+	if options.algo == 'svc': 
+		#C-Support Vector Classification.
+		rf = sklearn.svm.SVC(kernel = 'linear')
+		#fit for 2014 data - make the model 
+		rf = rf.fit(data.head(500), train['target'])
+		#predict 20130101 week 
+		predictions = rf.predict_proba(test)
+		#make predictions binary 
+		predictions = predictions.astype(np.int64)
+		#find accuracy 
+		cal_score("SUPPORT VECTOR CLASSIFIER", rf, predictions, test1['target']) 
+
+
+	if options.algo == 'sgd':
+		#SGD CLASSIFIER		
+		rf = SGDClassifier(alpha=0.0001, class_weight=None, epsilon=0.1, eta0=0.0,
+       		fit_intercept=True, l1_ratio=0.15, learning_rate='optimal',
+       loss='hinge', n_iter=5, n_jobs=1, penalty='l2', power_t=0.5,
+       random_state=None, shuffle=True, verbose=0,
+       warm_start=False)
+		#fit for 2014 data - make the model 
+		rf = rf.fit(data, train['target'])
+		#predict 20130101 week 
+		predictions = rf.predict_proba(test)
+		#make predictions binary 
+		predictions = predictions.astype(np.int64)
+		#find accuracy 
+		cal_score("SGD CLASSIFIER", rf, predictions,test1['target']) 
+
+	if options.algo == 'svm':
+		# SUPPORT VECTOR MACHINES 
+		rf = svm.SVC(kernel = 'linear')
+		#fit for 2014 data - make the model 
+		rf = rf.fit(test, test1['target'])
+		#predict 20130101 week 
+		predictions = rf.predict_proba(test)
+		#make predictions binary 
+		predictions = predictions.astype(np.int64)
+		#find accuracy 
+		cal_score("SUPPORT VECTOR CLASSIFIER", rf, predictions, test1['target']) 
+
+		#for sigmoid kernel
+		#rf= svm.SVC(kernel='rbf', C=2)
+		#fit for 2014 data - make the model 
+		#rf = rf.fit(features_train, target_train)
+		#predict 20130101 week 
+		#predictions = rf.predict_proba(test)
+		#make predictions binary 
+		#predictions = predictions.astype(np.int64)
+		#find accuracy 
+		#cal_score("SUPPORT VECTOR CLASSIFIER", rf, predictions, target) 
+
+
+	if options.algo == 'dt':
+		clf_tree = tree.DecisionTreeClassifier(max_depth=10)
+		clf_tree.fit(data, train['target'])
+		predictions = clf_tree.predict_proba(test)
+		predictions = predictions.astype(np.int64)
+		cal_score("DECISION TREE CLASSIFIER",clf_tree, predictions,test1['target'])
+		
+
+
+	#if options.algo == 'nb':
+	elapsed = timeit.default_timer() - start_time
+	print elapsed 
+	print "time for" + options.algo 
+
+
+
+#main ends here 
+if __name__ == '__main__':
+	main()
