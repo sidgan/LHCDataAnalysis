@@ -10,7 +10,7 @@ import warnings
 
 
 """
-File       : target.py
+File       : classification_target.py
 Author     : Siddha Ganju <siddhaganju AT gmail dot com>
 Description: 
 

@@ -1,6 +1,5 @@
-#!/bin/bash
-#!/usr/bin/env python
-#author sidgan 
+#!usr/bin/env python 
+#author sidgan
 
 import matplotlib.pyplot as plt
 import csv 

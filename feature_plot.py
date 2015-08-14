@@ -5,6 +5,15 @@ import numpy as np
 import warnings 
 import matplotlib.pyplot as plt
 
+"""
+File       : feature_plot.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+
+Plot variable frequency against value. This helps to find the correlation between all the 84 parameters and helps in feature selection.  
+"""
+
+
 def main():
     
     path = '/afs/cern.ch/user/s/sganju/private/'

@@ -1,12 +1,18 @@
-#!bin/bash
-#author sidgan
+#!/bin/bash
+#!/usr/bin/env python
+#author sidgan 
 
-#generate the target values
+"""
+File       : classification_target.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
 
-#if naccess > 10
-# if nusers > 5
-#then keep
-#values obtained from histograms
+generate the target values for classification
+
+if naccess > 10 AND  nusers > 5, then keep values obtained 
+ 
+"""
+
 
 import optparse
 import csv as csv

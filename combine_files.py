@@ -2,6 +2,14 @@ import csv as csv
 import glob
 import pandas as pd 
 
+"""
+File       : combine_files.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+Combine CSV files to get merged 2013, 2014 and 2015. 
+
+"""
+
 def main():
     
     path = '/afs/cern.ch/user/s/sganju/private/'

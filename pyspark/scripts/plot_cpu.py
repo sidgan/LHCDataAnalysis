@@ -1,8 +1,22 @@
+#!/bin/bash
+#!/usr/bin/env python
+#author sidgan 
+
+
 import matplotlib.pyplot as plt
 import csv 
 import pandas as pd 
 import numpy as np 
 import datetime 
+
+"""
+File       : plot_cpu.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+
+Plot CPU ad RAM usage
+
+"""
 
 actual = pd.read_csv("rf_stats.csv", delimiter = " ")
 ram1 = actual['ram']
@@ -16,7 +30,6 @@ cpu = actual['cpu']
 #total memory used
 total = 5376336000  
 #from pyutil 
-
 #to normalize, divide by total number of bytes 
 
 interval = 1 

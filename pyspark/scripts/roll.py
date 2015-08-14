@@ -1,4 +1,6 @@
-#roll over 2013 add each week and perform rolling forecasts for each week 
+#!/bin/bash
+#!/usr/bin/env python
+#author sidgan 
 
 import stdlib 
 import subprocess
@@ -9,6 +11,16 @@ import pandas as pd
 import numpy as np 
 import warnings 
 import matplotlib.pyplot as plt
+
+
+"""
+File       : roll.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+
+#roll over 2013 add each week and perform rolling forecasts for each week 
+ 
+"""
 
 def main():
     

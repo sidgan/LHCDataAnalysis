@@ -4,10 +4,19 @@ import pandas as pd
 import numpy as np 
 import datetime 
 
+"""
+File       : plot_cpu.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+
+Plot CPU ad RAM usage
+
+"""
+
 actual = pd.read_csv("rf_stats.csv", delimiter = " ")
 ram1 = actual['ram']
 cpu = actual['cpu']
-active = actual['active']
+#active = actual['active']
 
 #divide by total memory 
 #value in gigabytes 
@@ -15,7 +24,7 @@ active = actual['active']
 #total bytes 
 #total memory used
 total = 5376336000  
-
+#from pyutil 
 #to normalize, divide by total number of bytes 
 
 interval = 1 

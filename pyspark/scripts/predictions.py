@@ -1,6 +1,18 @@
-#!bin/bash 
-#author sidgan
+#!/bin/bash
+#!/usr/bin/env python
+#author sidgan 
 
+
+"""
+File       : predictions.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+
+Complete Command line pipeline to take options about which algorithm should be run on the CMS data and generate corresponding True Negative, True positive, False Negative and False Positive. 
+
+Updated version: classifier.py
+
+"""
 
 import csv 
 import pandas as pd
@@ -26,9 +38,6 @@ import timeit
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report 
 
-
-#RF, LinearSVC, SGDClassfier, VW, xgboost)
-#as well as SVM, decision tree and naive bayes from Spark platform
 
 def perf_measure(target, predictions):
 	TP = 0
@@ -68,18 +77,18 @@ def cal_score(method, clf, features_test, target_test):
 		print features_test 
 		print "ACCURACY" 
 		print method + " : %f " % scores.max()
-		#print "PRECISION"
-		#print sklearn.metrics.average_precision_score(features_test, target_test)
-		#print sklearn.metrics.precision_score(features_test, target_test)
-		#print "F1"
-		#print sklearn.metrics.f1_score(features_test, target_test)
-		#print "RECALL"
-		#print sklearn.metrics.recall_score(features_test, target_test)
-		#print sklearn.metrics.precision_recall_fscore_support(features_test, target_test)
-		#confusion_matrix(features_test, target_test)
-		#target_names = ['popular', 'unpopular']
-		#print(classification_report(features_test, target_test, target_names=target_names))
-		#perf_measure( target_test, features_test)
+		print "PRECISION"
+		print sklearn.metrics.average_precision_score(features_test, target_test)
+		print sklearn.metrics.precision_score(features_test, target_test)
+		print "F1"
+		print sklearn.metrics.f1_score(features_test, target_test)
+		print "RECALL"
+		print sklearn.metrics.recall_score(features_test, target_test)
+		print sklearn.metrics.precision_recall_fscore_support(features_test, target_test)
+		confusion_matrix(features_test, target_test)
+		target_names = ['popular', 'unpopular']
+		print(classification_report(features_test, target_test, target_names=target_names))
+		perf_measure( target_test, features_test)
 	
 
 def main():
@@ -107,7 +116,6 @@ def main():
 	#target = target.head(500)
 
 	#TRAINING DATA SET 
-	#features_train, features_test, target_train, target_test = train_test_split(data, target, test_size=split, random_state=0)
 	#read next week with its target values for performance metrics 
 	test1 = pd.read_csv('dataframe-20130101-20130107-TARGET.csv')
 	#use only some columns 
@@ -170,15 +178,15 @@ def main():
 		cal_score("SUPPORT VECTOR CLASSIFIER", rf, predictions, test1['target']) 
 
 		#for sigmoid kernel
-		#rf= svm.SVC(kernel='rbf', C=2)
-		#fit for 2014 data - make the model 
-		#rf = rf.fit(features_train, target_train)
+		rf= svm.SVC(kernel='rbf', C=2)
+		fit for 2014 data - make the model 
+		rf = rf.fit(features_train, target_train)
 		#predict 20130101 week 
-		#predictions = rf.predict_proba(test)
+		predictions = rf.predict_proba(test)
 		#make predictions binary 
-		#predictions = predictions.astype(np.int64)
+		predictions = predictions.astype(np.int64)
 		#find accuracy 
-		#cal_score("SUPPORT VECTOR CLASSIFIER", rf, predictions, target) 
+		cal_score("SUPPORT VECTOR CLASSIFIER", rf, predictions, target) 
 
 
 	if options.algo == 'dt':

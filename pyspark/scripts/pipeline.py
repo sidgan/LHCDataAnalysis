@@ -1,5 +1,17 @@
-#!usr/bin/env python 
-#author sidgan
+#!/bin/bash
+#!/usr/bin/env python
+#author sidgan 
+
+"""
+File       : pipeline.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+
+Part of a command line pipeline (see file /pipeline.py ) to only run Random Forest algorithm on the CMS data. 
+
+Updated version: classifier.py
+
+"""
 
 from sklearn.kernel_approximation import RBFSampler
 import sklearn.cluster 

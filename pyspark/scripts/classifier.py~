@@ -12,8 +12,6 @@ Complete Command line pipeline to take options about which algorithm should be r
  
 CPU usage is being monitored using psutil.
 
-Latest updated version.
-
 """
 
 from multiprocessing import Process

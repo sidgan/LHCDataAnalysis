@@ -1,6 +1,18 @@
 #!usr/bin/env python 
 #author sidgan
 
+"""
+File       : pipeline.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+
+Command line pipeline to take options about which algorithm should be run on the CMS data. 
+
+Updated version: classifier.py
+
+"""
+
+
 from sklearn.kernel_approximation import RBFSampler
 import sklearn.cluster 
 import optparse
@@ -70,13 +82,7 @@ def main():
 	target = train['target']
 	
 	#TRAINING DATA SET 
-	#final data frame with categorical and numerical values 
-	#data = pd.concat([train.get(num_values), su_train], axis=1)
         data = train 
-	#data = data.head(400)
-	#target = target.head(400)
-	
-	
 	print "Performing imputation."
 	imp = data.dropna().mean()
 	test = data.fillna(imp)
@@ -117,11 +123,6 @@ def main():
 	gs = GridSearchCV(gb, params, cv=5, scoring ='accuracy', n_jobs=4)
 	gs.fit(features_train, target_train)
 	cal_score("GRADIENT BOOSTING",gs, features_test, target_test)
-	#sorted(gs.grid_scores_, key = lambda x: x.mean_validation_score)
-	#print gs.best_score_
-	#print gs.best_params_
-	#predictions = gs.predict_proba(test)
-	#KERNEL APPROXIMATIONS - RBF 		
 	rbf_feature = RBFSampler(gamma=1, random_state=1)
 	X_features = rbf_feature.fit_transform(data)
 	
@@ -134,15 +135,11 @@ def main():
 	clf.fit(features_train, target_train)
 	cal_score("SGD Regression",clf, features_test, target_test)
 
-
 	#KN Classifier
 	neigh = KNeighborsClassifier(n_neighbors = 1)
 	neigh.fit(features_train, target_train)
 	cal_score("KN CLASSIFICATION",neigh, features_test, target_test)
 	#predictions = neigh.predict_proba(test)
-	
-		
-
 	
 	#Decision Tree classifier
 	clf_tree = tree.DecisionTreeClassifier(max_depth=10)

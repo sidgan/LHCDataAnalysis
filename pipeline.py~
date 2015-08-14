@@ -1,6 +1,15 @@
 #!usr/bin/env python 
 #author sidgan
 
+"""
+File       : combine_files.py
+Author     : Siddha Ganju <siddhaganju AT gmail dot com>
+Description: 
+Command line pipeline to  take options about which algorithm should be run on the CMS data. 
+
+"""
+
+
 from sklearn.kernel_approximation import RBFSampler
 import sklearn.cluster 
 import optparse
@@ -59,13 +68,7 @@ def main():
 	#specify target column
 	p.add_option('--target', '-y')	
 	options, arguments = p.parse_args()
-	#when user does not provide type of problem 
-	#ask for value of cross validation if previously true 
 
-	#Ask for numerical values 
-
-
-	#print "Enter labels for numerical values to be used for analysis, seperated by space"
 	num_values = "id cpu creator dataset dbs dtype era naccess nblk	nevt nfiles nlumis nrel nsites nusers parent primds proc_evts procds rel1_0 rel1_1 rel1_2 rel1_3 rel1_4	rel1_5 rel1_6 rel1_7 rel2_0 rel2_1 rel2_10 rel2_11 rel2_2 rel2_3 rel2_4 rel2_5 rel2_6 rel2_7 rel2_8 rel2_9 rel3_0 rel3_1 rel3_10 rel3_11 rel3_12 rel3_13 rel3_14 rel3_15 rel3_16 rel3_17 rel3_18 rel3_19 rel3_2 rel3_20 rel3_21 rel3_22 rel3_23 rel3_24 rel3_25 rel3_26 rel3_3 rel3_4 rel3_5 rel3_6 rel3_7 rel3_8 rel3_9 relt_0 relt_1 relt_2 rnaccess rnusers rtotcpu s_0 s_1 s_2 s_3 s_4size tier totcpu wct"
 	num_values = num_values.split()
 	
@@ -76,37 +79,16 @@ def main():
 	target = train['target']
 	
 	#TRAINING DATA SET 
-	#final data frame with categorical and numerical values 
-	#data = pd.concat([train.get(num_values), su_train], axis=1)
         data = train 
-	#data = data.head(400)
-	#target = target.head(400)
-	
-	#perform imputation if allowed - TRAINING DATA SET 
-	#if imputation == 1: 
-	#	imp = data.dropna().mean()
-	#	data = data.fillna(imp)
-	
 	print "Performing imputation."
 	imp = data.dropna().mean()
 	test = data.fillna(imp)
         data = data.fillna(imp)
 
-	#split the training data for cross validation 
-	#if options.cross_validation == 'True': 
-	#perform cross validation if v==true 
 	print "Splitting the training data with %f." % split 
 	features_train, features_test, target_train, target_test = train_test_split(data, target, test_size=split, random_state=0)
-		
-	#else: 
-	#no cross validation 
-	#features_train = data 
-	#features_test = test 
-	#target_train = target
-	#target_test = 0
 	print "Generating Model"	
 	#diffrentiate on the basis of type of problem
-	print "jjj"
 	#RANDOM FOREST CLASSIFIER 
 	rf = RandomForestClassifier(n_estimators=100)
 	rf = rf.fit(features_train, target_train)
@@ -138,11 +120,6 @@ def main():
 	gs = GridSearchCV(gb, params, cv=5, scoring ='accuracy', n_jobs=4)
 	gs.fit(features_train, target_train)
 	cal_score("GRADIENT BOOSTING",gs, features_test, target_test)
-	#sorted(gs.grid_scores_, key = lambda x: x.mean_validation_score)
-	#print gs.best_score_
-	#print gs.best_params_
-	#predictions = gs.predict_proba(test)
-	#KERNEL APPROXIMATIONS - RBF 		
 	rbf_feature = RBFSampler(gamma=1, random_state=1)
 	X_features = rbf_feature.fit_transform(data)
 	
@@ -155,15 +132,11 @@ def main():
 	clf.fit(features_train, target_train)
 	cal_score("SGD Regression",clf, features_test, target_test)
 
-
 	#KN Classifier
 	neigh = KNeighborsClassifier(n_neighbors = 1)
 	neigh.fit(features_train, target_train)
 	cal_score("KN CLASSIFICATION",neigh, features_test, target_test)
 	#predictions = neigh.predict_proba(test)
-	
-		
-
 	
 	#Decision Tree classifier
 	clf_tree = tree.DecisionTreeClassifier(max_depth=10)

@@ -1,3 +1,7 @@
+#!/bin/bash
+#!/usr/bin/env python
+#author sidgan 
+
 import csv as csv
 import glob
 import pandas as pd 
